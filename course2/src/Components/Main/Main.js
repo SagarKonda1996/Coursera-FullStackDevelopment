@@ -7,16 +7,28 @@ import Header from '../Header';
 import Footer from '../Footer';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../Home';
-
+import Contact from '../Contact';
+import { DISHES1,PROMOTIONS,LEADERS,COMMENTS } from "../../Shared/JSONDATA";
 const Main = props => {
+    
+    const [dishes, setDishes] = useState(DISHES)
+    const [homePageData, setHomePageData] = useState({
+        dishes: DISHES1,
+        comments: COMMENTS,
+        promotions: PROMOTIONS,
+        leaders: LEADERS
+    })
+    const [selectedDish, setSelectedDish] = useState(null)
     const HomePage = () => {
         return(
             <Home 
+            dish={homePageData.dishes.filter((dish) => dish.featured)[0]}
+            promotion={homePageData.promotions.filter((promo) => promo.featured)[0]}
+            leader={homePageData.leaders.filter((leader) => leader.featured)[0]}
+
             />
         );
       }
-    const [dishes, setDishes] = useState(DISHES)
-    const [selectedDish, setSelectedDish] = useState(null)
     return (
         <>
        <Header/>
@@ -28,6 +40,8 @@ const Main = props => {
             </div> */}
              <Switch>
               <Route path='/home' component={HomePage} />
+              <Route exact path='/contactus' component={Contact} />} />
+
                 <Route
                     exact
                     path='/menu'
