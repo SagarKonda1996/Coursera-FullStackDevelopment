@@ -1,0 +1,5 @@
+1. Dishes.js file contains json of all Dishes
+2. If you Want to Use simple Layout without Card then Replace the Line in index.js in this folder as Follows
+    a. export {default} from './MenuComponent'
+3. If you Want to Use Card Layout  then Replace the Line in index.js in this folder as Follows
+    a. export {default} from './CardMenuComponent'

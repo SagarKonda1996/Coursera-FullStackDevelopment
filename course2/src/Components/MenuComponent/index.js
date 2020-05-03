@@ -1,1 +1,1 @@
-export {default} from './MenuComponent'
+export {default} from './CardMenuComponent'
