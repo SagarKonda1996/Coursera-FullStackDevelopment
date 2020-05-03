@@ -1,0 +1,12 @@
+git init -->Initializes Git Repository
+git status -->Show all the Untracked Files and Changes that needs to be Commit
+git add . -->Adds all the files to staging to commit (ie to Git repository)
+git commit -m "Commit Message"  -->Commits the Current Added files using the Commit Message Specified
+git log -oneline  -->See a Brief log of commits
+git checkout CommitID -->Roll Backs the file status to the commit specified by CommitID
+git reset HEAD filename --> Unstage the Changes in File
+git reset <Filename>   --->Unstage a staged file but leave working directoy unchanged
+git reset --->Reset the staging area to last commit without disturbing working directory
+git remote add origin <remote URl> Add Remote Repository URL
+git push -u origin master -->Push local git repository to the origin to master branch
+git clone <Remote Rep URL> -->Clone Remote Repository to Local

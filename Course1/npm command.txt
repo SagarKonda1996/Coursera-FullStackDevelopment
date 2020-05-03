@@ -1,0 +1,3 @@
+npm install --> Install Packages specified in package.json
+npm install <packagename> -->Install a Specific Package
+npm install <package name> --save-dev -->Install package and tells to add to package json and specifies to be used in development server
