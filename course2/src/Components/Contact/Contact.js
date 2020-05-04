@@ -1,7 +1,35 @@
-import React from 'react'
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React,{useReducer} from 'react'
+import { Breadcrumb, BreadcrumbItem , Form, FormGroup, Label, Input, Col,Button} from 'reactstrap';
 import { Link } from 'react-router-dom';
 const Contact = props => {
+    const [userInput, setUserInput] = useReducer(
+        (state,newState)=>({...state,...newState}),
+        {
+            firstname: '',
+            lastname: '',
+            telnum: '',
+            email: '',
+            agree: false,
+            contactType: 'Tel.',
+            message: ''
+        }
+        
+        )
+
+        const handleInputChange=(event)=>{
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        setUserInput({
+            [name]:value
+        })
+
+        }
+        const handleSubmit=(event)=>{
+            console.log('Current State is: ' + JSON.stringify(userInput));
+            alert('Current State is: ' + JSON.stringify(userInput));
+            event.preventDefault();
+        }
     return (
         <div className="container">
             <div className="row">
@@ -40,6 +68,90 @@ const Contact = props => {
                     </div>
                 </div>
             </div>
+            <div className="row row-content">
+                   <div className="col-12">
+                      <h3>Send us your Feedback</h3>
+                   </div>
+                    <div className="col-12 col-md-9">
+                        <Form onSubmit={handleSubmit}>
+                            <FormGroup row>
+                                <Label htmlFor="firstname" md={2}>First Name</Label>
+                                <Col md={10}>
+                                    <Input type="text" id="firstname" name="firstname"
+                                        placeholder="First Name"
+                                        value={userInput.firstname}
+                                        onChange={handleInputChange} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlFor="lastname" md={2}>Last Name</Label>
+                                <Col md={10}>
+                                    <Input type="text" id="lastname" name="lastname"
+                                        placeholder="Last Name"
+                                        value={userInput.lastname}
+                                        onChange={handleInputChange} />
+                                </Col>                        
+                            </FormGroup>
+                            <FormGroup row>
+                            <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
+                                <Col md={10}>
+                                    <Input type="tel" id="telnum" name="telnum"
+                                        placeholder="Tel. number"
+                                        value={userInput.telnum}
+                                        onChange={handleInputChange} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlFor="email" md={2}>Email</Label>
+                                <Col md={10}>
+                                    <Input type="email" id="email" name="email"
+                                        placeholder="Email"
+                                        value={userInput.email}
+                                        onChange={handleInputChange} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col md={{size: 6, offset: 2}}>
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input type="checkbox"
+                                                name="agree"
+                                                checked={userInput.agree}
+                                                onChange={handleInputChange} /> {' '}
+                                            <strong>May we contact you?</strong>
+                                        </Label>
+                                    </FormGroup>
+                                </Col>
+                                <Col md={{size: 3, offset: 1}}>
+                                    <Input type="select" name="contactType"
+                                            value={userInput.contactType}
+                                            onChange={handleInputChange}>
+                                        <option>Tel.</option>
+                                        <option>Email</option>
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlFor="message" md={2}>Your Feedback</Label>
+                                <Col md={10}>
+                                    <Input type="textarea" id="message" name="message"
+                                        rows="12"
+                                        value={userInput.message}
+                                        onChange={handleInputChange}></Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col md={{size: 10, offset: 2}}>
+                                    <Button type="submit" color="primary">
+                                        Send Feedback
+                                    </Button>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </div>
+               </div>
+
+
         </div>
     )
 }
