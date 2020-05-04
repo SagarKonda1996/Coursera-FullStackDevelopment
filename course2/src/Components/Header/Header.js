@@ -1,8 +1,20 @@
-import React,{useState} from 'react'
-import { NavbarBrand, Navbar, Jumbotron,NavbarToggler,Nav,NavItem,Collapse } from 'reactstrap'
-import {NavLink} from 'react-router-dom'
+import React,{useState,useRef} from 'react'
+import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
+    Button, Modal, ModalHeader, ModalBody,
+    Form, FormGroup, Input, Label } from 'reactstrap';import {NavLink} from 'react-router-dom'
 const Header = props => {
     const [isNavOpen, setIsNavOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const toggleModal=()=>{
+        setIsModalOpen(!isModalOpen)
+    }
+    const handleSubmit=(event)=>{
+        console.log(inputref.current.username.value,inputref.current.password.value,inputref.current.remember.checked)
+        event.preventDefault()
+    }
+    const inputref=useRef({
+       
+    })
     return (
         <div>
                 <Navbar dark expand="md">
@@ -24,6 +36,11 @@ const Header = props => {
                                 <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
                             </NavItem>
                             </Nav>
+                            <Nav className="ml-auto" navbar>
+                                <NavItem>
+                                    <Button outline onClick={toggleModal}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
+                                </NavItem>
+                            </Nav>
                         </Collapse>
                     </div>
                 </Navbar>
@@ -37,6 +54,32 @@ const Header = props => {
                         </div>
                     </div>
                 </Jumbotron>
+                <Modal isOpen={isModalOpen} toggle={toggleModal}>  
+                    <ModalHeader>Login</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={handleSubmit}>
+                        <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input type="text" id="username" name="username"
+                                    innerRef={(input) =>inputref.current.username = input} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password"
+                                    innerRef={(input) =>inputref.current.password = input}  />
+                            </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    <Input type="checkbox" name="remember"
+                                    innerRef={(input) =>inputref.current.remember = input}  />
+                                    Remember me
+                                </Label>
+                            </FormGroup>
+                            <Button type="submit" value="submit" color="primary">Login</Button>
+
+                        </Form>
+                    </ModalBody>
+                </Modal>
             </div>
     )
 }
