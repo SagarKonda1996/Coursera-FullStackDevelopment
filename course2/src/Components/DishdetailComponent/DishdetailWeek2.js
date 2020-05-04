@@ -60,7 +60,6 @@ const CommentForm=()=>{
                     name="author"
                     className="form-control"
                     validators={{
-                        required,
                         minLength:minLength(2),
                         maxLength:maxLength(15)
                     }}
@@ -70,8 +69,7 @@ const CommentForm=()=>{
                 model=".author"
                 show="touched"
                 messages={{
-                    required:"Required Field",
-                    minLength:"Minimum 2 Characters Required",
+                    minLength:"Minimum 3 Characters Required",
                     maxLength:"Maximum 15 Characters Allowed"
                 }}
                 />
