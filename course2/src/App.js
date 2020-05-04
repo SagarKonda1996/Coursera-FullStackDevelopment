@@ -5,11 +5,14 @@ import MenuComponent from './Components/MenuComponent';
 import { DISHES } from "./Shared/dishes";
 import Main from './Components/Main';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from "react-redux";
+import {ConfigureStore} from './Redux/ConfigureStore'
 
 function App() {
   const [dishes, setDishes] = useState(DISHES)
   return (
-    <BrowserRouter>
+    <Provider store={ConfigureStore()}>
+        <BrowserRouter>
     <div className="App">
      {/* <Navbar dark color="primary">
      <div className="container">
@@ -20,6 +23,10 @@ function App() {
      <Main/>
     </div>
     </BrowserRouter>
+
+
+    </Provider>
+    
     
   );
 }
