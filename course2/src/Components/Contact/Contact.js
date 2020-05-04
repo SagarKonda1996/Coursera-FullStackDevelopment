@@ -1,5 +1,5 @@
 import React,{useReducer} from 'react'
-import { Breadcrumb, BreadcrumbItem , Form, FormGroup, Label, Input, Col,Button} from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem , Form, FormGroup, Label, Input, Col,Button, FormFeedback} from 'reactstrap';
 import { Link } from 'react-router-dom';
 const Contact = props => {
     const [userInput, setUserInput] = useReducer(
@@ -11,7 +11,14 @@ const Contact = props => {
             email: '',
             agree: false,
             contactType: 'Tel.',
-            message: ''
+            message: '',
+            touched:{
+                firstname: false,
+                lastname: false,
+                telnum: false,
+                email: false,
+
+            }
         }
         
         )
@@ -30,6 +37,45 @@ const Contact = props => {
             alert('Current State is: ' + JSON.stringify(userInput));
             event.preventDefault();
         }
+        const handleBlur=(event)=>{
+            const field=event.target.name
+            setUserInput({touched:{...userInput.touched,[field]:true}})
+
+        }
+        const validate=(firstname,lastname,telnum,email)=>{
+            const errors={
+                firstname: '',
+                lastname: '',
+                telnum: '',
+                email: '',
+
+            }
+            if(userInput.touched.firstname && userInput.firstname.length<3){
+                errors.firstname='First name Should be More than 3 Characters'
+            }
+            else if(userInput.touched.firstname && userInput.firstname.length>10)
+            {
+                errors.firstname='First name Should be Less than or Equal to 10 Characters'
+            }
+            if(userInput.touched.lastname && userInput.lastname.length<3){
+                errors.lastname='Last name Should be More than 3 Characters'
+            }
+            else if(userInput.touched.lastname && userInput.lastname.length>10)
+            {
+                errors.lastname='Last name Should be Less than or Equal to 10 Characters'
+            }
+            const phonereg=/^\d+$/;
+            if(userInput.touched.telnum && !phonereg.test(userInput.telnum)){
+                errors.telnum='Telephone Numbers should only Contain Numbers'
+            }
+            const emailreg=/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+            if(userInput.touched.email && !emailreg.test(userInput.email)){
+                errors.email='Not a Valid Email Address'
+            }
+            
+            return errors
+        }
+        const errors=validate(userInput.firstname,userInput.lastname,userInput.telnum,userInput.email)
     return (
         <div className="container">
             <div className="row">
@@ -80,7 +126,13 @@ const Contact = props => {
                                     <Input type="text" id="firstname" name="firstname"
                                         placeholder="First Name"
                                         value={userInput.firstname}
-                                        onChange={handleInputChange} />
+                                        onChange={handleInputChange}
+                                        onBlur={handleBlur}
+                                        valid={errors.firstname==''}
+                                        invalid={errors.firstname!=''}
+                                        />
+                                    <FormFeedback>{errors.firstname}</FormFeedback>
+
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -89,7 +141,12 @@ const Contact = props => {
                                     <Input type="text" id="lastname" name="lastname"
                                         placeholder="Last Name"
                                         value={userInput.lastname}
-                                        onChange={handleInputChange} />
+                                        onChange={handleInputChange}
+                                        onBlur={handleBlur}
+                                        valid={errors.lastname==''}
+                                        invalid={errors.lastname!=''}
+                                        />
+                                        <FormFeedback>{errors.lastname}</FormFeedback>
                                 </Col>                        
                             </FormGroup>
                             <FormGroup row>
@@ -98,7 +155,12 @@ const Contact = props => {
                                     <Input type="tel" id="telnum" name="telnum"
                                         placeholder="Tel. number"
                                         value={userInput.telnum}
-                                        onChange={handleInputChange} />
+                                        onChange={handleInputChange}
+                                        onBlur={handleBlur}
+                                        valid={errors.telnum==''}
+                                        invalid={errors.telnum!=''}
+                                        />
+                                    <FormFeedback>{errors.telnum}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -107,7 +169,12 @@ const Contact = props => {
                                     <Input type="email" id="email" name="email"
                                         placeholder="Email"
                                         value={userInput.email}
-                                        onChange={handleInputChange} />
+                                        onChange={handleInputChange}
+                                        onBlur={handleBlur}
+                                        valid={errors.email==''}
+                                        invalid={errors.email!=''}
+                                        />
+                                    <FormFeedback>{errors.email}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
