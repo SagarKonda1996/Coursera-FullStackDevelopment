@@ -1,11 +1,17 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle,BreadcrumbItem,Breadcrumb
+    CardTitle,BreadcrumbItem,Breadcrumb,Row,Col,Label,Button,
+    Modal,ModalBody,ModalHeader
 } from 'reactstrap';
+import {Control,LocalForm,Errors} from 'react-redux-form'
 import { Link } from "react-router-dom";
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
 const Comments=({comments=[]})=>{
     return comments.length>0?
+    <>
     <ul className="list-unstyled">
         {
             comments.map(comment=>
@@ -17,10 +23,85 @@ const Comments=({comments=[]})=>{
 
         }
     </ul>
-    
+    </>
     :null
 }
+const CommentForm=()=>{
+    const onSubmit=(values)=>{
+        console.log("Current State is "+JSON.stringify(values))
+        alert("Current State is "+JSON.stringify(values))
+    }
+    return <LocalForm onSubmit={(values) => onSubmit(values)}>
+        <Row className="form-group">
+            <Label htmlFor="rating" md={2}>Rating</Label>
+            <Col md={10}>
+                <Control.select
+                    model=".rating"
+                    id="rating"
+                    name="rating"
+                    className="form-control"
+                >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+
+
+                </Control.select>
+            </Col>
+        </Row>
+        <Row className="form-group">
+            <Label htmlFor="author" md={2}>Your Name</Label>
+            <Col md={10}>
+                <Control.text
+                    model=".author"
+                    id="author"
+                    name="author"
+                    className="form-control"
+                    validators={{
+                        required,
+                        minLength:minLength(2),
+                        maxLength:maxLength(15)
+                    }}
+                />
+                <Errors
+                className="text-danger"
+                model=".author"
+                show="touched"
+                messages={{
+                    required:"Required Field",
+                    minLength:"Minimum 2 Characters Required",
+                    maxLength:"Maximum 15 Characters Allowed"
+                }}
+                />
+            </Col>
+        </Row>
+        <Row className="form-group">
+            <Label htmlFor="comment" md={2}>Comment</Label>
+            <Col md={10}>
+                <Control.textarea
+                    model=".comment"
+                    id="comment"
+                    name="comment"
+                    className="form-control"
+                    rows="6"
+                />
+            </Col>
+        </Row>
+        <Row className="form-group">
+            <Col>
+            <Button type="submit" value="submit" color="primary"  >Submit</Button>
+            </Col>
+        </Row>
+    </LocalForm>
+
+}
 const DishdetailComponent = ({ dish,comments=[] }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const toggleModal=()=>{
+        setIsModalOpen(!isModalOpen)
+    }
     return dish ?
     <div className="container">
                 <div className="row">
@@ -47,7 +128,15 @@ const DishdetailComponent = ({ dish,comments=[] }) => {
             </div>
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
-                <Comments comments={dish.comments?dish.comment:comments}/>
+                <Comments comments={dish.comments?dish.comments:comments}/>
+                <Button outline onClick={toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
+                <Modal isOpen={isModalOpen} toggle={toggleModal} >
+                    <ModalHeader toggle={toggleModal}>Submit Comment</ModalHeader>
+                    <ModalBody>
+                    <CommentForm/>
+                    </ModalBody>
+                </Modal>
+
             </div>
         </div>
         </div>
