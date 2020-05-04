@@ -26,10 +26,9 @@ const Comments=({comments=[]})=>{
     </>
     :null
 }
-const CommentForm=()=>{
+const CommentForm=({dishId,addComment})=>{
     const onSubmit=(values)=>{
-        console.log("Current State is "+JSON.stringify(values))
-        alert("Current State is "+JSON.stringify(values))
+       addComment(dishId,values.rating,values.author,values.comment)
     }
     return <LocalForm onSubmit={(values) => onSubmit(values)}>
         <Row className="form-group">
@@ -95,7 +94,7 @@ const CommentForm=()=>{
     </LocalForm>
 
 }
-const DishdetailComponent = ({ dish,comments=[] }) => {
+const DishdetailComponent = ({ dish,comments=[],addComment }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const toggleModal=()=>{
         setIsModalOpen(!isModalOpen)
@@ -131,7 +130,7 @@ const DishdetailComponent = ({ dish,comments=[] }) => {
                 <Modal isOpen={isModalOpen} toggle={toggleModal} >
                     <ModalHeader toggle={toggleModal}>Submit Comment</ModalHeader>
                     <ModalBody>
-                    <CommentForm/>
+                    <CommentForm dishId={dish.id} addComment={addComment} />
                     </ModalBody>
                 </Modal>
 
