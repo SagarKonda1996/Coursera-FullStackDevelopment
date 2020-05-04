@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import { Navbar, NavbarBrand} from "reactstrap";
-import { DISHES } from "../../Shared/dishes";
+// import { DISHES } from "../../Shared/dishes";
 import MenuComponent from '../MenuComponent/MenuComponentWeek2';
 import DishdetailComponent from '../DishdetailComponent/DishdetailWeek2';
 import Header from '../Header';
@@ -8,12 +8,17 @@ import Footer from '../Footer';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../Home';
 import Contact from '../Contact';
-import { DISHES1,PROMOTIONS,LEADERS,COMMENTS } from "../../Shared/JSONDATA";
+// import { DISHES,PROMOTIONS,LEADERS,COMMENTS } from "../../Shared/JSONDATA";
+import {DISHES} from '../../Shared/dishes'
+import {COMMENTS} from '../../Shared/comments'
+import {PROMOTIONS} from '../../Shared/promotions'
+import {LEADERS} from '../../Shared/leaders'
+import About from '../Aboutus';
 const Main = props => {
     
     const [dishes, setDishes] = useState(DISHES)
     const [homePageData, setHomePageData] = useState({
-        dishes: DISHES1,
+        dishes: DISHES,
         comments: COMMENTS,
         promotions: PROMOTIONS,
         leaders: LEADERS
@@ -35,6 +40,7 @@ const Main = props => {
               comments={homePageData.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
         );
       };
+      const AboutUs=()=><About leaders={homePageData.leaders}/>
     return (
         <>
        <Header/>
@@ -48,6 +54,8 @@ const Main = props => {
               <Route path='/home' component={HomePage} />
               <Route exact path='/contactus' component={Contact} />} />
               <Route path='/menu/:dishId' component={DishWithId} />
+              <Route exact path='/aboutus' component={AboutUs} />} />
+
 
                 <Route
                     exact
@@ -56,7 +64,7 @@ const Main = props => {
                         () =>
                           
                                     <MenuComponent
-                                        dishes={dishes}
+                                        dishes={homePageData.dishes}
                                         onSelect={() => { }}
                                     />
                              
