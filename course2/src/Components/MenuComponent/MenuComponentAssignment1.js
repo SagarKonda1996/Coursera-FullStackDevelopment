@@ -25,7 +25,7 @@ const CardMenuComponent = ({ dishes = [] }) => {
                 <div className="row">
                     <Menu />
                 </div>
-                        <DishdetailComponent dish={selectedDish} />
+                <DishdetailComponent dish={selectedDish} />
             </div>
         </div>
     )

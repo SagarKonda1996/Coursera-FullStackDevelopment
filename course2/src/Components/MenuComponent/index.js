@@ -1,1 +1,1 @@
-export {default} from './MenuComponentAssignment1'
+export {default} from './MenuComponentWeek2'

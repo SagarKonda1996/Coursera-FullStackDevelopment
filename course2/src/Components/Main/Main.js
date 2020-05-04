@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
 import { Navbar, NavbarBrand} from "reactstrap";
 import { DISHES } from "../../Shared/dishes";
-import MenuComponent from './MenuComponent';
-import DishdetailComponent from './DishdetailComponent';
+import MenuComponent from '../MenuComponent/MenuComponentWeek2';
+import DishdetailComponent from '../DishdetailComponent/DishdetailWeek2';
 import Header from '../Header';
 import Footer from '../Footer';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -29,6 +29,12 @@ const Main = props => {
             />
         );
       }
+      const DishWithId = ({match}) => {
+        return(
+            <DishdetailComponent dish={homePageData.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+              comments={homePageData.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+        );
+      };
     return (
         <>
        <Header/>
@@ -41,21 +47,19 @@ const Main = props => {
              <Switch>
               <Route path='/home' component={HomePage} />
               <Route exact path='/contactus' component={Contact} />} />
+              <Route path='/menu/:dishId' component={DishWithId} />
 
                 <Route
                     exact
                     path='/menu'
                     component={
                         () =>
-                            <div className="container">
-                                <div className="row">
+                          
                                     <MenuComponent
                                         dishes={dishes}
                                         onSelect={() => { }}
                                     />
-                                </div>
-                            </div>
-
+                             
                     } />
                              
 

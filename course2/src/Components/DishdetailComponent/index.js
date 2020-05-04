@@ -1,1 +1,1 @@
-export {default} from './DishdetailComponent'
+export {default} from './DishdetailWeek2'
