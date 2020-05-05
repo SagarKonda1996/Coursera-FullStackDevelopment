@@ -28,9 +28,9 @@ const Comments = ({ comments = [] }) => {
         </>
         : null
 }
-const CommentForm = ({ dishId, addComment }) => {
+const CommentForm = ({ dishId, postComment }) => {
     const onSubmit = (values) => {
-        addComment(dishId, values.rating, values.author, values.comment)
+        postComment(dishId, values.rating, values.author, values.comment)
     }
     return <LocalForm onSubmit={(values) => onSubmit(values)}>
         <Row className="form-group">
@@ -100,7 +100,7 @@ const DishdetailComponent = (
     {
         dish,
         comments = [],
-        addComment,
+        postComment,
         isLoading,
         errMess,
         commentsErrMess
@@ -157,7 +157,7 @@ const DishdetailComponent = (
                         <Modal isOpen={isModalOpen} toggle={toggleModal} >
                             <ModalHeader toggle={toggleModal}>Submit Comment</ModalHeader>
                             <ModalBody>
-                                <CommentForm dishId={dish.id} addComment={addComment} />
+                                <CommentForm dishId={dish.id} postComment={postComment} />
                             </ModalBody>
                         </Modal>
 
