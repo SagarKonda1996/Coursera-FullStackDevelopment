@@ -8,6 +8,7 @@ import { Control, LocalForm, Errors } from 'react-redux-form'
 import { Link } from "react-router-dom";
 import Loading from '../Loading';
 import { baseUrl } from '../../Shared/baseUrl';
+import {FadeTransform, Fade, Stagger  } from "react-animation-components";
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -15,15 +16,23 @@ const Comments = ({ comments = [] }) => {
     return comments.length > 0 ?
         <>
             <ul className="list-unstyled">
-                {
-                    comments.map(comment =>
-                        <>
-                            <li className="my-2">{comment.comment}</li>
-                            <li className="my-2">{`--${comment.author},${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}`}</li>
-                        </>
+            <Stagger in>
+                {                        
+                    comments.map((comment) =>
+                        <Fade in>
+                            <li className="my-2" key={comment.id}>
+                                <p>
+                                    {comment.comment}
+                                </p>
+                                <p>
+                                    {`--${comment.author},${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}`}
+                                </p>
+                            </li>
+                        </Fade>
                     )
 
                 }
+            </Stagger>
             </ul>
         </>
         : null
@@ -140,15 +149,20 @@ const DishdetailComponent = (
                     </div>
                 </div>
                 <div className="row">
-
                     <div className="col-12 col-md-5 m-1">
-                        <Card>
-                            <CardImg top src={baseUrl+dish.image} alt={dish.name} />
-                            <CardBody>
-                                <CardTitle>{dish.name}</CardTitle>
-                                <CardText>{dish.description}</CardText>
-                            </CardBody>
-                        </Card>
+                        <FadeTransform
+                            in
+                            transformProps={{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}>
+                            <Card>
+                                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                                <CardBody>
+                                    <CardTitle>{dish.name}</CardTitle>
+                                    <CardText>{dish.description}</CardText>
+                                </CardBody>
+                            </Card>
+                        </FadeTransform>
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <h4>Comments</h4>
