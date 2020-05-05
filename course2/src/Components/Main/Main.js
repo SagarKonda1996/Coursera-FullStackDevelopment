@@ -8,7 +8,7 @@ import Home from '../Home';
 import Contact from '../Contact';
 import { connect } from "react-redux";
 import About from '../Aboutus';
-import { addComment, fetchDishes } from "../../Redux/ActionCreators";
+import { addComment, fetchDishes, fetchComments, fetchPromos } from "../../Redux/ActionCreators";
 import { actions } from "react-redux-form";
 
 
@@ -26,7 +26,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
     fetchDishes: () => dispatch(fetchDishes()),
-    resetFeedbackForm: () => dispatch(actions.reset('feedback'))
+    resetFeedbackForm: () => dispatch(actions.reset('feedback')),
+    fetchComments:()=>dispatch(fetchComments()),
+    fetchPromos:()=>dispatch(fetchPromos())
 })
 
 
@@ -38,7 +40,9 @@ const Main = ({
     leaders = [],
     addComment,
     fetchDishes,
-    resetFeedbackForm
+    resetFeedbackForm,
+    fetchComments,
+    fetchPromos
 
 }) => {
     //Components
@@ -46,10 +50,12 @@ const Main = ({
         return (
             <Home
                 dish={dishes.dishes.filter((dish) => dish.featured)[0]}
-                promotion={promotions.filter((promo) => promo.featured)[0]}
+                promotion={promotions.promotions.filter((promo) => promo.featured)[0]}
                 leader={leaders.filter((leader) => leader.featured)[0]}
                 dishesLoading={dishes.isLoading}
                 dishesErrMess={dishes.errMess}
+                promosLoading={promotions.isLoading}
+                promosErrMess={promotions.errMess}
 
             />
         );
@@ -58,10 +64,11 @@ const Main = ({
         return (
             <DishdetailComponent
                 dish={dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
-                comments={comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
+                comments={comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
                 addComment={addComment}
                 isLoading={dishes.isLoading}
                 errMess={dishes.errMess}
+                commentsErrMess={comments.errMess}
             />
         );
     };
@@ -82,6 +89,8 @@ const Main = ({
     //Functions
     useEffect(() => {
         fetchDishes()
+        fetchPromos()
+        fetchComments()
     }, [])
 
     return (

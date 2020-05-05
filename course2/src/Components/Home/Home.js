@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle} from 'reactstrap';
 import Loading from '../Loading';
+import { baseUrl } from '../../Shared/baseUrl';
 
 const RenderCard=(
     {
@@ -22,7 +23,7 @@ const RenderCard=(
     }
     return(
         <Card>
-            <CardImg src={item.image} alt={item.name} />
+            <CardImg src={baseUrl+item.image} alt={item.name} />
             <CardBody>
             <CardTitle>{item.name}</CardTitle>
             {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null }
@@ -39,6 +40,8 @@ const Home=({
     leader,
     dishesLoading,
     dishesErrMess,
+    promosLoading,
+    promosErrMess
 })=> {
     return(
         <div className="container">
@@ -51,7 +54,11 @@ const Home=({
                     />
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={promotion} />
+                    <RenderCard item={promotion} 
+                    isLoading={promosLoading}
+                    errMess={promosErrMess}                    
+                    
+                    />
                 </div>
                 <div className="col-12 col-md m-1">
                     <RenderCard item={leader} />

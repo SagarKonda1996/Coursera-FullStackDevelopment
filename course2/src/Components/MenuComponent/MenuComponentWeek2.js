@@ -5,6 +5,7 @@ import {
 } from 'reactstrap';
 import { Link } from "react-router-dom";
 import Loading from '../Loading';
+import { baseUrl } from '../../Shared/baseUrl';
 
 const RenderMenuItem=({
     dish,
@@ -13,7 +14,7 @@ const RenderMenuItem=({
     return  <Link to={`/menu/${dish.id}`}>
     <Card key={dish.id}
         onClick={() => onSelect(dish)}>
-        <CardImg width="100%" src={dish.image} alt={dish.name} />
+        <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name} />
         <CardImgOverlay>
             <CardTitle>{dish.name}</CardTitle>
         </CardImgOverlay>
