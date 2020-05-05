@@ -1,1 +1,1 @@
-export {default} from './ContactRedux'
+export {default} from './ContactReduxGlobal'
