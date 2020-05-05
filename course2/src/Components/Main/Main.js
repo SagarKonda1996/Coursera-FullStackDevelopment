@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import About from '../Aboutus';
 import { postComment, fetchDishes, fetchComments, fetchPromos } from "../../Redux/ActionCreators";
 import { actions } from "react-redux-form";
-
+import { TransitionGroup,CSSTransition } from "react-transition-group";
 
 
 //Functions
@@ -42,7 +42,8 @@ const Main = ({
     fetchDishes,
     resetFeedbackForm,
     fetchComments,
-    fetchPromos
+    fetchPromos,
+    location
 
 }) => {
     //Components
@@ -96,14 +97,18 @@ const Main = ({
     return (
         <>
             <Header />
-            <Switch>
-                <Route path='/home' component={HomePage} />
-                <Route exact path='/contactus' component={ContactUS} />} />
-                <Route path='/menu/:dishId' component={DishWithId} />
-                <Route exact path='/aboutus' component={AboutUs} />} />
-                <Route exact path='/menu' component={Menu} />} />
-                <Redirect to="/home" />
-            </Switch>
+            <TransitionGroup>
+                <CSSTransition key={location.key} classNames="page" timeout={3000}>
+                    <Switch>
+                        <Route path='/home' component={HomePage} />
+                        <Route exact path='/contactus' component={ContactUS} />} />
+                        <Route path='/menu/:dishId' component={DishWithId} />
+                        <Route exact path='/aboutus' component={AboutUs} />} />
+                        <Route exact path='/menu' component={Menu} />} />
+                        <Redirect to="/home" />
+                    </Switch>
+                </CSSTransition>
+            </TransitionGroup>
             <Footer />
         </>
     )
