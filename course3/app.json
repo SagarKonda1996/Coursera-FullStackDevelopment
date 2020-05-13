@@ -1,0 +1,17 @@
+{
+  "name": "course3",
+  "displayName": "course3",
+  "expo": {
+    "name": "course3",
+    "slug": "course3",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
