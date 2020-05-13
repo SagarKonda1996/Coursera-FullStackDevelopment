@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View,FlatList } from 'react-native'
 import {ListItem} from 'react-native-elements'
-const MenuComponent = ({dishes=[]}) => {
+const MenuComponent = ({dishes=[],onPress}) => {
     const renderMenuItem=({item,index})=>{
         return(
             <ListItem
@@ -10,6 +10,7 @@ const MenuComponent = ({dishes=[]}) => {
             subtitle={item.description}
             chevron={false}
             leftAvatar={{source:require('./images/uthappizza.png')}}
+            onPress={()=>onPress(item.id)}
             />
         )
     }
