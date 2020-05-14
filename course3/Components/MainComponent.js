@@ -4,20 +4,23 @@ import { View, Text } from 'react-native'
 import Menu from './MenuComponent'
 import {DISHES} from '../Shared/dishes.js'
 import DishdetailComponent from './DishdetailComponent'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
+
 const MainComponent = () => {
-    const [dishes, setDishes] = useState(DISHES)
-    const [selectedDish, setSelectedDish] = useState(null)
-    const onDishSelected=(dishId)=>{
-        setSelectedDish(dishId)
-    }
+   
     return (
-        <>
-        <Menu 
-        dishes={dishes} 
-        onPress={onDishSelected}
+        <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Menu"
+          component={Menu}
+          options={{ title: 'Welcome' }}
         />
-        <DishdetailComponent dish={dishes.filter(dish=>dish.id==selectedDish)[0]}/>
-        </>
+        <Stack.Screen name="Dishdetails" component={DishdetailComponent} options={{title:'Dish Details'}} />
+      </Stack.Navigator>
+    </NavigationContainer>
     )
 }
 

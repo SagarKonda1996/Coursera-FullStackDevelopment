@@ -1,2 +1,67 @@
 Course1/node_modules
 course2/node_modules
+
+
+# OSX
+#
+course3/.DS_Store
+
+# Xcode
+#
+course3/build/
+course3/*.pbxuser
+course3/!default.pbxuser
+course3/*.mode1v3
+course3/!default.mode1v3
+course3/*.mode2v3
+course3/!default.mode2v3
+course3/*.perspectivev3
+course3/!default.perspectivev3
+course3/xcuserdata
+course3/*.xccheckout
+course3/*.moved-aside
+DerivedData
+course3/*.hmap
+course3/*.ipa
+course3/*.xcuserstate
+course3/project.xcworkspace
+
+# Android/IntelliJ
+#
+course3/build/
+course3/.idea
+course3/.gradle
+course3/local.properties
+course3/*.iml
+
+# node.js
+#
+course3/node_modules/
+course3/npm-debug.log
+course3/yarn-error.log
+
+# BUCK
+course3/buck-out/
+course3/\.buckd/
+course3/*.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+course3/*/fastlane/report.xml
+course3/*/fastlane/Preview.html
+course3/*/fastlane/screenshots
+
+# Bundle artifacts
+course3/*.jsbundle
+
+# CocoaPods
+course3/ios/Pods/
+
+# Expo
+course3/.expo/*
+course3/web-build/
