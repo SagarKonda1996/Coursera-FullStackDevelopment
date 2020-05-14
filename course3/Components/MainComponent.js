@@ -7,18 +7,29 @@ import DishdetailComponent from './DishdetailComponent'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
-
+const getOptions=(title)=>{
+    return {
+        title:title,
+        headerStyle: {
+            backgroundColor: '#2e3192',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+    }
+}
 const MainComponent = () => {
    
     return (
         <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Menu" >
         <Stack.Screen
           name="Menu"
           component={Menu}
-          options={{ title: 'Welcome' }}
+          options={getOptions('Welcome')}
         />
-        <Stack.Screen name="Dishdetails" component={DishdetailComponent} options={{title:'Dish Details'}} />
+        <Stack.Screen name="Dishdetails" component={DishdetailComponent} options={getOptions('Dish Details')} />
       </Stack.Navigator>
     </NavigationContainer>
     )
