@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import {Card} from 'react-native-elements'
-import {DISHES} from '../Shared/dishes'
+import {DISHES} from '../shared/dishes'
 
 const RenderDish=({dish})=>{
     return dish?

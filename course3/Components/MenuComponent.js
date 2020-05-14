@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { StyleSheet, Text, View,FlatList } from 'react-native'
 import {ListItem} from 'react-native-elements'
-import {DISHES} from '../Shared/dishes'
+import {DISHES} from '../shared/dishes'
 const MenuComponent = ({navigation}) => {
     const renderMenuItem=({item,index})=>{
         return(
