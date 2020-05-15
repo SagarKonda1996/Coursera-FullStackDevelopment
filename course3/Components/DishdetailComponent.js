@@ -4,12 +4,17 @@ import {Card,Icon} from 'react-native-elements'
 import { ScrollView, FlatList } from 'react-native-gesture-handler'
 import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
+import {postFavorite} from '../redux/ActionCreators'
 const mapStateToProps=state=>{
     return {
         dishes:state.dishes,
-        comments:state.comments
+        comments:state.comments,
+        favorites:state.favorites
     }
 }
+const mapDispatchToProps=(dispatch)=>({
+    postFavorite:(dishId)=>dispatch(postFavorite(dishId))
+})
 const RenderDish=({dish,favorite,toggleFavorite})=>{
     return dish?
     <Card
@@ -50,17 +55,11 @@ const RenderComments=({comments=[]})=>{
         </Card>
     );
 }
-const DishdetailComponent = ({route,navigation,dishes,comments}) => {
+const DishdetailComponent = ({route,navigation,dishes,comments,postFavorite,favorites}) => {
    
-    const [favorites, setFavorites] = useState([])
     const {dishId}=route.params
     const toggleFavorite=(dishId)=>{
-        if(favorites.includes(dishId)){
-            setFavorites(favorites.filter(item=>item!=dishId))
-        }
-        else{
-            setFavorites([...favorites,dishId])
-        }
+        postFavorite(dishId)
     }
     
     return (
@@ -76,6 +75,6 @@ const DishdetailComponent = ({route,navigation,dishes,comments}) => {
     )
 }
 
-export default connect(mapStateToProps)(DishdetailComponent)
+export default connect(mapStateToProps,mapDispatchToProps)(DishdetailComponent)
 
 const styles = StyleSheet.create({})
