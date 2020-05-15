@@ -16,6 +16,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
 import { fetchComments,fetchDishes,fetchLeaders,fetchPromos } from "../redux/ActionCreators";
+import Reservation from './ReservationComponent'
 const mapStateToProps=state=>{
     return {
 
@@ -88,14 +89,21 @@ const HomeNavigator=({navigation})=>{
 }
 const AboutNavigator=({navigation})=>{
     return  <Stack.Navigator>
-            <Stack.Screen name="Home" component={AboutComponent} options={getOptions('About Us',navigation)}/>
+            <Stack.Screen name="AboutUs" component={AboutComponent} options={getOptions('About Us',navigation)}/>
         </Stack.Navigator>
 }
 const ContactNavigator=({navigation})=>{
     return  <Stack.Navigator>
-            <Stack.Screen name="Home" component={ContactComponent} options={getOptions('Contact Us',navigation)}/>
+            <Stack.Screen name="ContactUs" component={ContactComponent} options={getOptions('Contact Us',navigation)}/>
         </Stack.Navigator>
 }
+
+const ReservationNavigator=({navigation})=>{
+  return  <Stack.Navigator>
+          <Stack.Screen name="ReserveTable" component={Reservation} options={getOptions('Reserve Table',navigation)}/>
+      </Stack.Navigator>
+}
+
 
 
 const MainNavigator = ()=>{
@@ -104,6 +112,7 @@ const MainNavigator = ()=>{
     <Drawer.Screen name="About Us" component={AboutNavigator} options={{drawerIcon:()=><Icon name="info-circle" type="font-awesome" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Menu" component={MenuNavigator} options={{drawerIcon:()=><Icon name="menu" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Contact Us" component={ContactNavigator} options={{drawerIcon:()=><Icon name="address-card" type="font-awesome" size={24} color="#2e3192"/>}}/>
+    <Drawer.Screen name="Reserve Table" component={ReservationNavigator} options={{drawerIcon:()=><Icon name="cutlery" type="font-awesome" size={24} color="#2e3192"/>}}/>
 
 </Drawer.Navigator>
 }
