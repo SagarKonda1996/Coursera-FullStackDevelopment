@@ -1,14 +1,20 @@
 import React,{useState} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import {Card,Icon} from 'react-native-elements'
-import {DISHES} from '../shared/dishes'
-import {COMMENTS} from '../shared/comments'
 import { ScrollView, FlatList } from 'react-native-gesture-handler'
+import { connect } from "react-redux";
+import {baseUrl} from '../shared/baseUrl'
+const mapStateToProps=state=>{
+    return {
+        dishes:state.dishes,
+        comments:state.comments
+    }
+}
 const RenderDish=({dish,favorite,toggleFavorite})=>{
     return dish?
     <Card
     featuredTitle={dish.name}
-    image={require('./images/uthappizza.png')}
+    image={{uri:baseUrl+dish.image}}
     >
         <Text style={{margin:10}}>
             {dish.description}
@@ -44,9 +50,8 @@ const RenderComments=({comments=[]})=>{
         </Card>
     );
 }
-const DishdetailComponent = ({route,navigation}) => {
-    const [dishes, setDishes] = useState(DISHES)
-    const [comments, setComments] = useState(COMMENTS)
+const DishdetailComponent = ({route,navigation,dishes,comments}) => {
+   
     const [favorites, setFavorites] = useState([])
     const {dishId}=route.params
     const toggleFavorite=(dishId)=>{
@@ -61,16 +66,16 @@ const DishdetailComponent = ({route,navigation}) => {
     return (
         <ScrollView>
         <RenderDish 
-        dish={dishes.filter(dish=>dish.id==parseInt(dishId))[0]}
+        dish={dishes.dishes.filter(dish=>dish.id==parseInt(dishId))[0]}
         favorite={favorites.filter(item=>item==parseInt(dishId)).length>0}
         toggleFavorite={toggleFavorite}
         
         />
-        <RenderComments comments={comments.filter(comment=>comment.dishId==parseInt(dishId))}/>
+        <RenderComments comments={comments.comments.filter(comment=>comment.dishId==parseInt(dishId))}/>
         </ScrollView>
     )
 }
 
-export default DishdetailComponent
+export default connect(mapStateToProps)(DishdetailComponent)
 
 const styles = StyleSheet.create({})

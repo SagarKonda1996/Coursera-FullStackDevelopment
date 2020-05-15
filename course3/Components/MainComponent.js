@@ -1,5 +1,5 @@
 /* tslint:disable */
-import React,{useState} from 'react'
+import React,{useEffect} from 'react'
 import { View, Text,StyleSheet,Image } from 'react-native'
 import Menu from './MenuComponent'
 import {DISHES} from '../shared/dishes.js'
@@ -13,7 +13,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Icon } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
+import { connect } from "react-redux";
+import {baseUrl} from '../shared/baseUrl'
+import { fetchComments,fetchDishes,fetchLeaders,fetchPromos } from "../redux/ActionCreators";
+const mapStateToProps=state=>{
+    return {
 
+    }
+}
+
+const mapDispatchToProps=dispatch=>({
+  fetchDishes:()=>dispatch(fetchDishes()),
+  fetchComments:()=>dispatch(fetchComments()),
+  fetchLeaders:()=>dispatch(fetchLeaders()),
+  fetchPromos:()=>dispatch(fetchPromos())
+
+})
 const Stack = createStackNavigator();
 const Drawer=createDrawerNavigator();
 const getOptions = (title, navigation,headerLeftRequired=true) => {
@@ -92,8 +107,14 @@ const MainNavigator = ()=>{
 
 </Drawer.Navigator>
 }
-const MainComponent = () => {
-   
+const MainComponent = ({fetchComments,fetchDishes,fetchPromos,fetchLeaders}) => {
+   useEffect(() => {
+     fetchComments()
+     fetchDishes()
+     fetchPromos()
+     fetchLeaders()
+
+   }, [])
     return (
         <NavigationContainer>
       <MainNavigator/>
@@ -102,7 +123,8 @@ const MainComponent = () => {
     )
 }
 
-export default MainComponent
+export default connect(mapStateToProps,mapDispatchToProps)(MainComponent)
+
 const styles = StyleSheet.create({
     container: {
       flex: 1,

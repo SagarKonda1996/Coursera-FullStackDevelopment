@@ -1,17 +1,22 @@
 import React,{useState} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Card, ListItem } from 'react-native-elements'
-import {LEADERS} from '../shared/leaders'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
-const AboutComponent = (props) => {
-    const [leaders, setLeaders] = useState(LEADERS)
+import { connect } from "react-redux";
+import {baseUrl} from '../shared/baseUrl'
+const mapStateToProps=state=>{
+    return {
+        leaders:state.leaders
+    }
+}
+const AboutComponent = ({leaders}) => {
     const RenderLeaderItem=({item,index})=>{
         return <ListItem
                 key={index}
                 title={item.name}
                 subtitle={item.description}
                 chevron={false}
-                leftAvatar={{source:require('./images/alberto.png')}}
+                leftAvatar={{source:{uri:baseUrl+item.image}}}
                 />
     }
 
@@ -27,7 +32,7 @@ const AboutComponent = (props) => {
             </Card>
             <Card title="Corporate Leadership">
                 <FlatList
-                data={leaders}
+                data={leaders.leaders}
                 renderItem={RenderLeaderItem}
                 keyExtractor={item=>item.id.toString()}
                 />
@@ -38,6 +43,6 @@ const AboutComponent = (props) => {
     )
 }
 
-export default AboutComponent
+export default connect(mapStateToProps)(AboutComponent) 
 
 const styles = StyleSheet.create({})

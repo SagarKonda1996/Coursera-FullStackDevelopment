@@ -1,24 +1,31 @@
 import React,{useState} from 'react'
 import { StyleSheet, Text, View,FlatList } from 'react-native'
-import {ListItem} from 'react-native-elements'
-import {DISHES} from '../shared/dishes'
-const MenuComponent = ({navigation}) => {
+import {ListItem,Tile} from 'react-native-elements'
+import { connect } from "react-redux";
+import {baseUrl} from '../shared/baseUrl'
+const mapStateToProps=state=>{
+    return {
+        dishes:state.dishes,
+      
+    }
+}
+
+const MenuComponent = ({navigation,dishes}) => {
     const renderMenuItem=({item,index})=>{
         return(
-            <ListItem
+            <Tile
             key={index}
             title={item.name}
-            subtitle={item.description}
-            chevron={false}
-            leftAvatar={{source:require('./images/uthappizza.png')}}
+            caption={item.description}
+            featured={true}
+            imageSrc={{uri:baseUrl+item.image}}
             onPress={()=>navigation.navigate('Dishdetails',{dishId:item.id})}
             />
         )
     }
-    const [dishes, setDishes] = useState(DISHES)
     return (
         <FlatList
-        data={dishes}
+        data={dishes.dishes}
         renderItem={renderMenuItem}
         keyExtractor={item=>item.id.toString()}
         />
@@ -26,6 +33,6 @@ const MenuComponent = ({navigation}) => {
     )
 }
 
-export default MenuComponent
+export default connect(mapStateToProps)(MenuComponent)
 
 const styles = StyleSheet.create({})
