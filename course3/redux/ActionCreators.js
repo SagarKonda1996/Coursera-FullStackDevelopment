@@ -135,7 +135,6 @@ export const fetchLeaders=()=>(dispatch)=> {
            .then(response=>response.json())
            .then(leaders=>dispatch(addLeaders(leaders)))
            .catch(error=>{
-            alert(error.message)   
             
             dispatch(leadersFailed(error.message))}) 
 
