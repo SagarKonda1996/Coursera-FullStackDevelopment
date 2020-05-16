@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,Alert } from 'react-native'
 import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
 import { ListItem } from 'react-native-elements';
@@ -29,7 +29,26 @@ const FavoritesComponent = (
         const rightButton=[{
             text:'Delete',
             type:'delete',
-            onPress:()=>deleteFavorite(item.id)
+            onPress:()=>{
+                Alert.alert(
+                    'Delete Favorite',
+                    'Are you sure you wish to delete the favorite dish '+ item.name +' ? ',
+                    [
+                        {
+                         text:'Cancel',
+                         onPress:()=>{},
+                         style:'cancel'  
+                        },
+                        {
+                        text:'OK',
+                        onPress:()=>deleteFavorite(item.id),
+                        }
+                    ],
+                    {
+                        cancelable:false,
+                    }
+                )
+            }
         }]
         return <SwipeOut right={rightButton} autoClose={true}  >
                     <ListItem
