@@ -4,7 +4,7 @@ import {Card,Icon,Rating,Input,Button} from 'react-native-elements'
 import { ScrollView, FlatList } from 'react-native-gesture-handler'
 import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
-import {postFavorite,postComment} from '../redux/ActionCreators'
+import {postFavorite,postComment,deleteFavorite} from '../redux/ActionCreators'
 import { Modal } from 'react-native';
 const mapStateToProps=state=>{
     return {
@@ -15,7 +15,8 @@ const mapStateToProps=state=>{
 }
 const mapDispatchToProps=(dispatch)=>({
     postFavorite:(dishId)=>dispatch(postFavorite(dishId)),
-    postComment:(dishId,rating,author,comment)=>dispatch(postComment(dishId,rating,author,comment))
+    postComment:(dishId,rating,author,comment)=>dispatch(postComment(dishId,rating,author,comment)),
+    deleteFavorite:(dishId)=>dispatch(deleteFavorite(dishId))
 })
 
 const CommentForm=({dishId,postComment})=>{
@@ -158,11 +159,24 @@ const RenderComments=({comments=[]})=>{
         </Card>
     );
 }
-const DishdetailComponent = ({route,navigation,dishes,comments,postFavorite,favorites,postComment}) => {
+const DishdetailComponent = (
+    {
+        route,
+        navigation,
+        dishes,
+        comments,
+        postFavorite,
+        favorites,
+        postComment,
+        deleteFavorite
+    }) => {
    
     const {dishId}=route.params
     const toggleFavorite=(dishId)=>{
+        if(favorites.filter(item=>item==parseInt(dishId)).length==0)
         postFavorite(dishId)
+        else
+        deleteFavorite(dishId)
     }
     
     return (

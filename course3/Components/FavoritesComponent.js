@@ -5,6 +5,8 @@ import {baseUrl} from '../shared/baseUrl'
 import { ListItem } from 'react-native-elements';
 import Loading from './LoadingComponent';
 import { FlatList } from 'react-native-gesture-handler';
+import SwipeOut from 'react-native-swipeout'
+import {deleteFavorite} from '../redux/ActionCreators'
 const mapStateToProps=state=>{
     return {
         dishes:state.dishes,
@@ -13,19 +15,32 @@ const mapStateToProps=state=>{
     }
 }
 const mapDispatchToProps=(dispatch)=>({
-
+    deleteFavorite:(dishId)=>dispatch(deleteFavorite(dishId))
 })
-const FavoritesComponent = ({dishes,favorites=[],navigation}) => {
-
+const FavoritesComponent = (
+    {
+        dishes,
+        favorites=[],
+        navigation,
+        deleteFavorite    
+    }) => {
+    
     const RenderMenuItem=({item,index})=>{
-        return <ListItem
-                key={index}
-                title={item.name}
-                subtitle={item.description}
-                chevron={false}
-                onPress={()=>navigation.navigate('Dishdetails',{dishId:item.id})}
-                leftAvatar={{source:{uri:baseUrl+item.image}}}        
-                />
+        const rightButton=[{
+            text:'Delete',
+            type:'delete',
+            onPress:()=>deleteFavorite(item.id)
+        }]
+        return <SwipeOut right={rightButton} autoClose={true}  >
+                    <ListItem
+                        key={index}
+                        title={item.name}
+                        subtitle={item.description}
+                        chevron={false}
+                        onPress={() => navigation.navigate('Dishdetails', { dishId: item.id })}
+                        leftAvatar={{ source: { uri: baseUrl + item.image } }}
+                    />
+        </SwipeOut>
     }
     if(dishes.isLoading){
         return <Loading/>
