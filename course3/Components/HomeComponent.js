@@ -45,8 +45,11 @@ const HomeComponent = ({dishes,leaders,promotions}) => {
       ).start(()=>animate())
   }  
   useEffect(() => {
-        animate()
-    }, [])
+        if((dishes.dishes && dishes.dishes.length>0)||(leaders.leaders && leaders.leaders.length>0)||(promotions.promotions && promotions.promotions.length>0)){
+            animate()
+        }
+       
+    }, [dishes,promotions,leaders])
     const xpos1=animatedValue.interpolate({
         inputRange:[0,1,3,5,8],
         outputRange:[1200,600,0,-600,-1200]

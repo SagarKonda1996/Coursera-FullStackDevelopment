@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
 import {postFavorite,postComment,deleteFavorite} from '../redux/ActionCreators'
 import { Modal } from 'react-native';
+import * as Animatable from 'react-native-animatable'
+
 const mapStateToProps=state=>{
     return {
         dishes:state.dishes,
@@ -105,40 +107,39 @@ const CommentForm=({dishId,postComment})=>{
         </>
 }
 
-const RenderDish=({dish,favorite,toggleFavorite,postComment})=>{
-    return dish?
-    <Card
-    featuredTitle={dish.name}
-    image={{uri:baseUrl+dish.image}}
-    >
-        <Text style={{margin:10}}>
-            {dish.description}
-        </Text>
-        <View style={styles.dishActions}>
-        <Icon 
-        name={favorite?'heart':'heart-o'} 
-        raised 
-        reverse 
-        type="font-awesome"
-        color="#f50"
-        onPress={()=>toggleFavorite(dish.id)}
-        />
-        <CommentForm 
-        dishId={dish.id}
-        postComment={postComment}
-        />
-        </View>
-        
-        
-    </Card>:
-    <View></View>
+const RenderDish = ({ dish, favorite, toggleFavorite, postComment }) => {
+    return dish ?
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+            <Card
+                featuredTitle={dish.name}
+                image={{ uri: baseUrl + dish.image }}
+            >
+                <Text style={{ margin: 10 }}>
+                    {dish.description}
+                </Text>
+                <View style={styles.dishActions}>
+                    <Icon
+                        name={favorite ? 'heart' : 'heart-o'}
+                        raised
+                        reverse
+                        type="font-awesome"
+                        color="#f50"
+                        onPress={() => toggleFavorite(dish.id)}
+                    />
+                    <CommentForm
+                        dishId={dish.id}
+                        postComment={postComment}
+                    />
+                </View>
+            </Card>
+        </Animatable.View> :
+        <View></View>
 }
 
 const RenderComments=({comments=[]})=>{
     const RenderCommentItem=({item,index})=>{
         return <View key={index} style={{margin: 10}}>
         <Text style={{fontSize: 14}}>{item.comment}</Text>
-        {/* <Text style={{fontSize: 12}}>{item.rating} Stars</Text> */}
         <Rating
         readonly
         startingValue={item.rating}
@@ -150,6 +151,7 @@ const RenderComments=({comments=[]})=>{
     }
 
     return (
+        <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
         <Card title='Comments' >
         <FlatList 
             data={comments}
@@ -157,6 +159,7 @@ const RenderComments=({comments=[]})=>{
             keyExtractor={item => item.id.toString()}
             />
         </Card>
+        </Animatable.View>
     );
 }
 const DishdetailComponent = (

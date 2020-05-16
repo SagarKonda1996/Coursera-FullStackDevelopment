@@ -4,6 +4,8 @@ import {ListItem,Tile} from 'react-native-elements'
 import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
 import Loading from './LoadingComponent';
+import * as Animatable from 'react-native-animatable'
+
 const mapStateToProps=state=>{
     return {
         dishes:state.dishes,
@@ -14,6 +16,7 @@ const mapStateToProps=state=>{
 const MenuComponent = ({navigation,dishes}) => {
     const renderMenuItem=({item,index})=>{
         return(
+            <Animatable.View animation="fadeInRightBig" duration={3000} >
             <Tile
             key={index}
             title={item.name}
@@ -22,6 +25,7 @@ const MenuComponent = ({navigation,dishes}) => {
             imageSrc={{uri:baseUrl+item.image}}
             onPress={()=>navigation.navigate('Dishdetails',{dishId:item.id})}
             />
+            </Animatable.View>
         )
     }
     if(dishes.isLoading){

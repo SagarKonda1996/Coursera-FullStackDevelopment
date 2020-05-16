@@ -5,6 +5,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { connect } from "react-redux";
 import { baseUrl } from '../shared/baseUrl'
 import Loading from './LoadingComponent';
+import * as Animatable from 'react-native-animatable'
 const mapStateToProps = state => {
     return {
         leaders: state.leaders
@@ -31,6 +32,7 @@ const AboutComponent = ({ leaders }) => {
             </Text>
         </Card>)
     }
+
     if(leaders.isLoading){
         return <ScrollView>
         <History />
@@ -40,26 +42,30 @@ const AboutComponent = ({ leaders }) => {
     </ScrollView>
     }
     else if(leaders.errMess){
-      return  <ScrollView>
+        return <ScrollView>
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
                 <History />
                 <Card title="Corporate Leadership">
-                   <Text>
-                       {leaders.errMess}
-                   </Text>
+                    <Text>
+                        {leaders.errMess}
+                    </Text>
                 </Card>
-            </ScrollView>
+            </Animatable.View>
+        </ScrollView>
     }
     else{
         return (
             <ScrollView>
-                <History />
-                <Card title="Corporate Leadership">
-                    <FlatList
-                        data={leaders.leaders}
-                        renderItem={RenderLeaderItem}
-                        keyExtractor={item => item.id.toString()}
-                    />
-                </Card>
+                <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                    <History />
+                    <Card title="Corporate Leadership">
+                        <FlatList
+                            data={leaders.leaders}
+                            renderItem={RenderLeaderItem}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    </Card>
+                </Animatable.View>
             </ScrollView>
     
         )

@@ -7,6 +7,8 @@ import Loading from './LoadingComponent';
 import { FlatList } from 'react-native-gesture-handler';
 import SwipeOut from 'react-native-swipeout'
 import {deleteFavorite} from '../redux/ActionCreators'
+import * as Animatable from 'react-native-animatable'
+
 const mapStateToProps=state=>{
     return {
         dishes:state.dishes,
@@ -51,6 +53,7 @@ const FavoritesComponent = (
             }
         }]
         return <SwipeOut right={rightButton} autoClose={true}  >
+                    <Animatable.View animation="fadeInRightBig" duration={2000} >
                     <ListItem
                         key={index}
                         title={item.name}
@@ -59,6 +62,7 @@ const FavoritesComponent = (
                         onPress={() => navigation.navigate('Dishdetails', { dishId: item.id })}
                         leftAvatar={{ source: { uri: baseUrl + item.image } }}
                     />
+                    </Animatable.View>
         </SwipeOut>
     }
     if(dishes.isLoading){
