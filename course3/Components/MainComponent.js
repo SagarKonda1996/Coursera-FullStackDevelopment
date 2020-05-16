@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import {baseUrl} from '../shared/baseUrl'
 import { fetchComments,fetchDishes,fetchLeaders,fetchPromos } from "../redux/ActionCreators";
 import Reservation from './ReservationComponent'
+import FavoritesComponent from './FavoritesComponent'
 const mapStateToProps=state=>{
     return {
 
@@ -98,12 +99,17 @@ const ContactNavigator=({navigation})=>{
         </Stack.Navigator>
 }
 
+const FavoritesNavigator=({navigation})=>{
+  return  <Stack.Navigator>
+  <Stack.Screen name="My Favorites" component={FavoritesComponent} options={getOptions('My Favorites',navigation)}/>
+</Stack.Navigator>
+}
+
 const ReservationNavigator=({navigation})=>{
   return  <Stack.Navigator>
           <Stack.Screen name="ReserveTable" component={Reservation} options={getOptions('Reserve Table',navigation)}/>
       </Stack.Navigator>
 }
-
 
 
 const MainNavigator = ()=>{
@@ -112,6 +118,7 @@ const MainNavigator = ()=>{
     <Drawer.Screen name="About Us" component={AboutNavigator} options={{drawerIcon:()=><Icon name="info-circle" type="font-awesome" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Menu" component={MenuNavigator} options={{drawerIcon:()=><Icon name="menu" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Contact Us" component={ContactNavigator} options={{drawerIcon:()=><Icon name="address-card" type="font-awesome" size={24} color="#2e3192"/>}}/>
+    <Drawer.Screen name="My Favorites" component={FavoritesNavigator} options={{drawerIcon:()=><Icon name="heart" type="font-awesome" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Reserve Table" component={ReservationNavigator} options={{drawerIcon:()=><Icon name="cutlery" type="font-awesome" size={24} color="#2e3192"/>}}/>
 
 </Drawer.Navigator>

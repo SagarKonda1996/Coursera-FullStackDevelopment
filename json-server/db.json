@@ -209,6 +209,22 @@
       "comment": "Sagars Comment on Uthappizza",
       "date": "2020-05-05T18:23:58.343Z",
       "id": 20
+    },
+    {
+      "dishId": 0,
+      "rating": 4,
+      "author": "Sagar",
+      "comment": "Konda",
+      "date": "2020-05-15T21:51:48.185Z",
+      "id": 21
+    },
+    {
+      "dishId": 0,
+      "rating": 4,
+      "author": "Sagar Konda",
+      "comment": "Very Good Dish ",
+      "date": "2020-05-16T18:10:35.458Z",
+      "id": 22
     }
   ],
   "promotions": [

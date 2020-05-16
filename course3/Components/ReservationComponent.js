@@ -109,12 +109,15 @@ const Reservation = () => {
                     <Text style={styles.modalText}>
                             Date and Time :{userInput.date}
                     </Text>
-
+                    <View style={styles.modal}>
                     <Button
                     title="Close"
                     onPress={resetForm}
                     color='#512DA8'
                     />
+                    </View>
+
+                   
                 </View>
 
             </Modal>
