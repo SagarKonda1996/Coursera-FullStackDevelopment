@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useRef} from 'react'
 import { StyleSheet, Text, View,Alert,PanResponder } from 'react-native'
 import {Card,Icon,Rating,Input,Button} from 'react-native-elements'
 import { ScrollView, FlatList } from 'react-native-gesture-handler'
@@ -119,12 +119,17 @@ const RenderDish = (
            return true
            else
            return false
-
-
        }
+       const refervar=useRef()
+       const handleViewRef=ref=>refervar.current=ref
        const panResponder=PanResponder.create({
            onStartShouldSetPanResponder:(e,gestureState)=>{
                return true
+           },
+           onPanResponderGrant:(e,gestureState)=>{
+                refervar.current.rubberBand(1000)
+                .then(endState=>{})
+                
            },
            onPanResponderEnd:(e,gestureState)=>{
                if(recognizeDrag(gestureState)){
@@ -159,6 +164,7 @@ const RenderDish = (
         duration={2000} 
         delay={1000} 
         {...panResponder.panHandlers}
+        ref={handleViewRef}
         >
             <Card
                 featuredTitle={dish.name}
