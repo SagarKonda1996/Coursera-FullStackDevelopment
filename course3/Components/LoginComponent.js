@@ -43,7 +43,6 @@ const LoginTab = ({navigation,route}) => {
     }
     const handleLogin=()=>{
         if(userInput.remember){
-            console.log(JSON.stringify(userInput))
             SecureStore.setItemAsync(
                 'userinfo',
                 JSON.stringify(userInput)
@@ -173,7 +172,7 @@ const RegisterTab=({navigation})=>{
             SecureStore.deleteItemAsync('userinfo')
             .catch(error=>console.log('Could Not Delete User Info'))
             .then(r=>console.log("Success Delete"))
-            navigation.navigate('Login') 
+            navigation.navigate('Login',{username:userInput.username,password:userInput.password,remember:true}) 
 
         }
     }

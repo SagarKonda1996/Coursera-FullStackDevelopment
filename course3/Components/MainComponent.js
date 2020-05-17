@@ -1,6 +1,6 @@
 /* tslint:disable */
 import React,{useEffect} from 'react'
-import { View, Text,StyleSheet,Image } from 'react-native'
+import { View, Text,StyleSheet,Image,ToastAndroid } from 'react-native'
 import Menu from './MenuComponent'
 import {DISHES} from '../shared/dishes.js'
 import DishdetailComponent from './DishdetailComponent'
@@ -19,6 +19,8 @@ import { fetchComments,fetchDishes,fetchLeaders,fetchPromos } from "../redux/Act
 import Reservation from './ReservationComponent'
 import FavoritesComponent from './FavoritesComponent'
 import Login from './LoginComponent'
+import * as NetInfo from "@react-native-community/netinfo";
+
 const mapStateToProps=state=>{
     return {
 
@@ -138,8 +140,35 @@ const MainComponent = ({fetchComments,fetchDishes,fetchPromos,fetchLeaders}) => 
      fetchDishes()
      fetchPromos()
      fetchLeaders()
-
+     NetInfo.fetch()
+     .then((connectionInfo)=>{
+       ToastAndroid.show(
+         `Network type : ${connectionInfo.type} \n effectiveType: ${connectionInfo.isConnected}`,
+         ToastAndroid.LONG
+         )
+     })
+     const unsubscribe = NetInfo.addEventListener(connectionInfo => {
+      handleConnectivityChange(connectionInfo)
+    });
+     return ()=>{
+       unsubscribe()
+     }
    }, [])
+  
+   const handleConnectivityChange=(connectionInfo)=>{
+     switch(connectionInfo.type){
+       case 'none': ToastAndroid.show('You are Offline',ToastAndroid.LONG)
+                    break;
+       case 'cellular': ToastAndroid.show('You are Connected to Mobile Network',ToastAndroid.LONG)
+       break;
+       case 'wifi': ToastAndroid.show('You are Connected to Wifi',ToastAndroid.LONG)
+       break;
+       case 'unknown': ToastAndroid.show('You are Offline',ToastAndroid.LONG)
+       break;
+       default: break
+     }
+
+   }
     return (
         <NavigationContainer>
       <MainNavigator/>
