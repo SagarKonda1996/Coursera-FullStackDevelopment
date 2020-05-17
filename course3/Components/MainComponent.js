@@ -18,6 +18,7 @@ import {baseUrl} from '../shared/baseUrl'
 import { fetchComments,fetchDishes,fetchLeaders,fetchPromos } from "../redux/ActionCreators";
 import Reservation from './ReservationComponent'
 import FavoritesComponent from './FavoritesComponent'
+import Login from './LoginComponent'
 const mapStateToProps=state=>{
     return {
 
@@ -72,7 +73,14 @@ const CustomerDrawer=(props)=>{
     </SafeAreaView>
   </ScrollView>
 }
-
+const LoginNavigator=({navigation})=>{
+  return <Stack.Navigator>
+            <Stack.Screen 
+            name="Login" 
+            component={Login} 
+            options={getOptions('Login',navigation)} />
+        </Stack.Navigator>
+}
 const MenuNavigator=({navigation})=>{
     return <Stack.Navigator initialRouteName="Menu" >
         <Stack.Screen name="Menu" component={Menu} options={getOptions('Menu',navigation)}/>
@@ -113,8 +121,9 @@ const ReservationNavigator=({navigation})=>{
 
 
 const MainNavigator = ()=>{
-    return  <Drawer.Navigator drawerContent={props=><CustomerDrawer {...props}/>}>
-    <Drawer.Screen   name="Home" component={HomeNavigator} options={{drawerIcon:()=><Icon name="home" size={24} color="#2e3192"/>}}/>
+    return  <Drawer.Navigator initialRouteName='Home' drawerContent={props=><CustomerDrawer {...props}/>}>
+    <Drawer.Screen name="Login" component={LoginNavigator} options={{drawerIcon:()=><Icon name="user-o"type="font-awesome" size={24} color="#2e3192"/>}}/>
+    <Drawer.Screen name="Home" component={HomeNavigator} options={{drawerIcon:()=><Icon name="home" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="About Us" component={AboutNavigator} options={{drawerIcon:()=><Icon name="info-circle" type="font-awesome" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Menu" component={MenuNavigator} options={{drawerIcon:()=><Icon name="menu" size={24} color="#2e3192"/>}}/>
     <Drawer.Screen name="Contact Us" component={ContactNavigator} options={{drawerIcon:()=><Icon name="address-card" type="font-awesome" size={24} color="#2e3192"/>}}/>

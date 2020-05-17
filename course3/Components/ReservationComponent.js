@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native'
+import React, { useState,useEffect } from 'react'
+import { View, Text, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert, Platform } from 'react-native'
 import { Card } from "react-native-elements";
 import DatePicker from 'react-native-datepicker'
 import * as Animatable from 'react-native-animatable'
+import * as Permissions from 'expo-permissions'
+import {Notifications} from 'expo'
+
+
 const Reservation = () => {
     const [userInput, setUserInput] = useState({
         guests: 1,
@@ -10,6 +14,15 @@ const Reservation = () => {
         date: '',
         showModal: false
     })
+    useEffect(() => {
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('androidNotify', {
+              name: 'androidNotify',
+              sound: true,
+              vibrate:true
+            });
+          }
+    }, [])
     const handleChange = (key, value) => {
         setUserInput({ ...userInput, [key]: value })
     }
@@ -23,6 +36,34 @@ const Reservation = () => {
             smoking: false,
             date: '',
             showModal: false
+        })
+    }
+    const obtainNotificationPermission=async()=>{
+        let permission =await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS)
+        if(permission.status!='granted'){
+            permission=await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS)
+            if(permission.status!='granted'){
+                Alert.alert('Permission Not Granted to Show Notifications')
+            }
+        }
+        return permission
+
+    }
+    const presentLocalNotification=async(date)=>{
+        await obtainNotificationPermission()
+        Notifications.presentLocalNotificationAsync({
+            title:'Your Reservation',
+            body:`Reservation for ${date} Submitted Successfully`,
+            ios:{
+                sound:true
+            },
+            android:{
+                sticky:false,
+                sound:true,
+                vibrate:true,
+                color:'#512DA8',
+                channelId:'androidNotify'
+             }
         })
     }
     return (
@@ -101,7 +142,7 @@ const Reservation = () => {
                                      },
                                      {
                                          text:'OK',
-                                         onPress:()=>resetForm()
+                                         onPress:()=>presentLocalNotification(userInput.date)
                                      }
                                  ],
                                  {
