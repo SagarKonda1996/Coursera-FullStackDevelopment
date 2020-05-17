@@ -1,5 +1,5 @@
 import React,{useState,useRef} from 'react'
-import { StyleSheet, Text, View,Alert,PanResponder } from 'react-native'
+import { StyleSheet, Text, View,Alert,PanResponder,Share } from 'react-native'
 import {Card,Icon,Rating,Input,Button} from 'react-native-elements'
 import { ScrollView, FlatList } from 'react-native-gesture-handler'
 import { connect } from "react-redux";
@@ -115,6 +115,15 @@ const RenderDish = (
         const handleChange=(key,value)=>{
             setUserInput ({...userInput,[key]:value})
         }
+        const shareDish=(title,message,url)=>{
+            Share.share({
+                title:title,
+                message:`${title} ${message} ${url}`,
+                url:url
+            },{
+                dialogTitle:`Share ${title}`
+            })
+        }
        const recognizeDrag=({moveX,moveY,dx,dy})=>{
            if(dx<-200)
            return true
@@ -199,6 +208,13 @@ const RenderDish = (
                         userInput={userInput}
                         handleChange={handleChange}
                         setUserInput={setUserInput}
+                    />
+                    <Icon
+                        name="share"
+                        reverse
+                        type="font-awesome"
+                        color="#51D2A8"
+                        onPress={()=>shareDish(dish.name,dish.description,baseUrl+dish.image)}
                     />
                 </View>
             </Card>
