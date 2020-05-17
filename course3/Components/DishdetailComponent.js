@@ -21,16 +21,7 @@ const mapDispatchToProps=(dispatch)=>({
     deleteFavorite:(dishId)=>dispatch(deleteFavorite(dishId))
 })
 
-const CommentForm=({dishId,postComment})=>{
-    const [userInput, setUserInput] = useState({
-        rating:'',
-        author:'',
-        comment:'',
-        showModal:false
-    })
-    const handleChange=(key,value)=>{
-        setUserInput ({...userInput,[key]:value})
-    }
+const CommentForm=({dishId,postComment,handleChange,userInput,setUserInput})=>{
     const resetForm=()=>{
         setUserInput({
             rating:0,
@@ -114,12 +105,28 @@ const RenderDish = (
         toggleFavorite, 
         postComment 
         }) => {
+
+        const [userInput, setUserInput] = useState({
+            rating:'',
+            author:'',
+            comment:'',
+            showModal:false
+        })
+        const handleChange=(key,value)=>{
+            setUserInput ({...userInput,[key]:value})
+        }
        const recognizeDrag=({moveX,moveY,dx,dy})=>{
            if(dx<-200)
            return true
            else
            return false
        }
+       const recognizeComment=({moveX,moveY,dx,dy})=>{
+        if(dx>200)
+        return true
+        else
+        return false
+    }
        const refervar=useRef()
        const handleViewRef=ref=>refervar.current=ref
        const panResponder=PanResponder.create({
@@ -155,6 +162,10 @@ const RenderDish = (
                        )
                    return true
                }
+               if(recognizeComment(gestureState)){
+                   handleChange('showModal',true)
+                   return true
+               }
            }
 
        })
@@ -185,6 +196,9 @@ const RenderDish = (
                     <CommentForm
                         dishId={dish.id}
                         postComment={postComment}
+                        userInput={userInput}
+                        handleChange={handleChange}
+                        setUserInput={setUserInput}
                     />
                 </View>
             </Card>

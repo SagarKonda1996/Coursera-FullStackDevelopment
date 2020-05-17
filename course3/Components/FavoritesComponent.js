@@ -59,7 +59,7 @@ const FavoritesComponent = (
                         title={item.name}
                         subtitle={item.description}
                         chevron={false}
-                        onPress={() => navigation.navigate('Dishdetails', { dishId: item.id })}
+                        onPress={()=>navigation.navigate('Dishdetails',{dishId:item.id})}
                         leftAvatar={{ source: { uri: baseUrl + item.image } }}
                     />
                     </Animatable.View>
