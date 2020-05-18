@@ -1,14 +1,24 @@
 const express=require('express')
 const http=require('http')
+const morgan=require('morgan')
 
 const hostname='localhost'
 const port=3000
 // Initialize Express
 const app=express()
 
-//Declaring App Parameters
+
+//Configuring the App to use Morgan for Logging
+app.use(morgan('dev'))
+
+
+//Seeting the Directory to use the Files from 
+
+app.use(express.static(__dirname+'/public'))
+
+//Declaring App Parameters [Default Setup when the route not exits]
 app.use((req,res,next)=>{
-    console.log(req.headers)
+   
     res.statusCode=200
     res.setHeader('Content-Type','text/html')
     res.end(`<html><body><h1>Welcome to Express Server</h1></body></html>`)
