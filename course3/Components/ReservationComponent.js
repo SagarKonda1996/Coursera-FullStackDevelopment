@@ -1,9 +1,10 @@
 import React, { useState,useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert, Platform } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert, Platform,ToastAndroid } from 'react-native'
 import { Card } from "react-native-elements";
 import DatePicker from 'react-native-datepicker'
 import * as Animatable from 'react-native-animatable'
 import * as Permissions from 'expo-permissions'
+import * as Calendar from 'expo-calendar';
 import {Notifications} from 'expo'
 
 
@@ -27,10 +28,10 @@ const Reservation = () => {
         setUserInput({ ...userInput, [key]: value })
     }
     const handleReservation = () => {
-        handleChange('showModal', !userInput.showModal)
-
+        // handleChange('showModal', !userInput.showModal)
+        addReservationToCalendar(userInput.date)
     }
-    const resetForm = () => {
+    const resetForm = () =>  {
         setUserInput({
             guests: 1,
             smoking: false,
@@ -65,6 +66,49 @@ const Reservation = () => {
                 channelId:'androidNotify'
              }
         })
+    }
+    const obtainCalendarPermission=async()=>{
+        let permission = await Calendar.getCalendarPermissionsAsync()
+        if (permission.status != 'granted') {
+            permission = await Calendar.requestCalendarPermissionsAsync()
+            if (permission.status != 'granted') {
+                ToastAndroid.show('Permsission To Access Calender has Been Denied We will Not be Able to Add Schedule To Your Calender', ToastAndroid.LONG)
+            }
+
+        }
+        return permission
+
+    }
+    const getCalenderId=async()=>{
+        const calendarId = await Calendar.createCalendarAsync({
+            title: 'test',
+            color: '#00AAEE',
+            source: {
+              isLocalAccount: false,
+              name: 'Phone',
+              type: 'com.android.huawei.phone',
+            },
+            name: 'Phone Owner',
+            ownerAccount: 'phoneowner@test.com',
+            accessLevel: 'owner',
+          });
+          return calendarId
+    }
+    const addReservationToCalendar=async(date)=>{
+    await obtainCalendarPermission()
+    let id=await getCalenderId()
+    let endDate=new Date(date)
+    endDate.setHours(endDate.getHours()+2)
+    await Calendar.createEventAsync(id,{
+        title:'Con Fusion Table Reservation',
+        startDate:new Date(date),
+        endDate:endDate,
+        timeZone:'Asia/Hong_Kong',
+        location:'121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
+        
+    })
+    .then(data=>ToastAndroid.show('Sucess',ToastAndroid.LONG))
+    .catch(err=>console.log("Failed"))
     }
     return (
         <ScrollView>
@@ -142,7 +186,7 @@ const Reservation = () => {
                                      },
                                      {
                                          text:'OK',
-                                         onPress:()=>presentLocalNotification(userInput.date)
+                                         onPress:()=>handleReservation()
                                      }
                                  ],
                                  {

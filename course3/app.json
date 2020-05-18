@@ -1,6 +1,6 @@
 {
-  "name": "course3",
-  "displayName": "course3",
+  "name": "Restaurant",
+  "displayName": "Restaurant",
   "expo": {
     "name": "course3",
     "slug": "course3",
@@ -12,6 +12,10 @@
     ],
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.sagar.restaurant",
+      "versionCode": 1
+    }
   }
 }

@@ -72,6 +72,7 @@ const LoginTab = ({navigation,route}) => {
             onChangeText={(password)=>handleChange('password',password)}
             leftIcon={<Icon type="font-awesome" name="key"/>}
             value={userInput.password}
+            secureTextEntry={true}
             containerStyle={styles.formInput}
             />
             <CheckBox
@@ -145,6 +146,20 @@ const RegisterTab=({navigation})=>{
 
         }
     }
+    const getImageFromGallery=async()=>{
+        const cameraPermission=await Permissions.askAsync(Permissions.CAMERA)
+        const cameraRoll=await Permissions.askAsync(Permissions.CAMERA_ROLL)
+        if(cameraPermission.status=='granted' && cameraRoll.status=='granted'){
+            let capturedImage=await ImagePicker.launchImageLibraryAsync({
+                allowsEditing:true,
+                aspect:[4,3]
+            })
+            if(!capturedImage.cancelled){
+                processImage(capturedImage.uri)
+            }
+
+        } 
+    }
     const processImage=async(imageUri)=>{
         let processedImage=await ImageManipulator.manipulateAsync(
             imageUri,
@@ -189,6 +204,10 @@ const RegisterTab=({navigation})=>{
                     title="Camera"
                     onPress={getImageFromCamera}
                     />
+                <Button
+                    title="Gallery"
+                    onPress={getImageFromGallery}
+                />
             </View>
             <Input
                 placeholder="Username"
@@ -201,6 +220,7 @@ const RegisterTab=({navigation})=>{
                 placeholder="Password"
                 leftIcon={{ type: 'font-awesome', name: 'key' }}
                 onChangeText={(password) => handleChange('password',password)}
+                secureTextEntry={true}
                 value={userInput.password}
                 containerStyle={styles.formInput}
                 />
@@ -274,7 +294,8 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         flexDirection: 'row',
-        margin: 20
+        margin: 20,
+        justifyContent:'space-around'
     },
     image: {
       margin: 10,
