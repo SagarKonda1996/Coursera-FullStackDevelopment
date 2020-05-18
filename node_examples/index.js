@@ -1,7 +1,4 @@
-var rect={
-    permiter:(x,y)=>(2*(x+y)),
-    area:(x,y)=>x*y
-}
+var rect=require('./rectange')
 
 const solveRect=(a,b)=>{
     console.log(`\n Solving for Rectangle L= ${a} & B= ${b}`)
