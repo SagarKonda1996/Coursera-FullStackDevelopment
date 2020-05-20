@@ -12,6 +12,8 @@ var promotionsRouter=require('./routes/promoRouter')
 var leadersRouter=require('./routes/leaderRouter')
 
 const Dishes=require('./models/dishes');
+const Leaders=require('./models/leaders');
+const Promotions=require('./models/promotions');
 
 const url='mongodb+srv://sagar:x@sagar-83iwx.mongodb.net/conFusion?retryWrites=true&w=majority'
 const connect=mongoose.connect(url);
