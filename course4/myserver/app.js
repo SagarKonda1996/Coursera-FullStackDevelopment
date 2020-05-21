@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session=require('express-session');
+var FileStore=require('session-file-store')(session);
 const mongoose=require('mongoose')
 
 var indexRouter = require('./routes/index');
@@ -35,12 +37,19 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser('sagar-konda'));
+// app.use(cookieParser('sagar-konda'));
+app.use(session({
+  name:'session-id',
+  secret:'sagar-konda',
+  saveUninitialized:false,
+  resave:false,
+  store:new FileStore()
+}))
 
 const auth=(req,res,next)=>{
-  console.log(req.signedCookies);
+  console.log(req.session);
 
-  if(!req.signedCookies.user)
+  if(!req.session.user)
   {
     var authHeader=req.headers.authorization;
     if(!authHeader)
@@ -56,7 +65,7 @@ const auth=(req,res,next)=>{
   
     if(username=='admin' && password=='password')
     {
-      res.cookie('user','admin',{signed:true})
+      req.session.user='admin';
       next();
     }
     else{
@@ -68,7 +77,7 @@ const auth=(req,res,next)=>{
   }
   else
   {
-    if(req.signedCookies.user=='admin'){
+    if(req.session.user=='admin'){
       next();
     }
     else
