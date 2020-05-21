@@ -3,30 +3,30 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session=require('express-session');
-var FileStore=require('session-file-store')(session);
-const mongoose=require('mongoose')
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
+const mongoose = require('mongoose')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var dishesRouter=require('./routes/dishRouter')
-var promotionsRouter=require('./routes/promoRouter')
-var leadersRouter=require('./routes/leaderRouter')
+var dishesRouter = require('./routes/dishRouter')
+var promotionsRouter = require('./routes/promoRouter')
+var leadersRouter = require('./routes/leaderRouter')
 
-const Dishes=require('./models/dishes');
-const Leaders=require('./models/leaders');
-const Promotions=require('./models/promotions');
+const Dishes = require('./models/dishes');
+const Leaders = require('./models/leaders');
+const Promotions = require('./models/promotions');
 
-const url='mongodb+srv://sagar:x@sagar-83iwx.mongodb.net/conFusion?retryWrites=true&w=majority'
-const connect=mongoose.connect(url);
+const url = 'mongodb+srv://sagar:x@sagar-83iwx.mongodb.net/conFusion?retryWrites=true&w=majority'
+const connect = mongoose.connect(url);
 
 connect
-.then((db)=>{
-  console.log("Connected Correctly To Server");
-},
-(err)=>{
-  console.log(err);
-})
+  .then((db) => {
+    console.log("Connected Correctly To Server");
+  },
+    (err) => {
+      console.log(err);
+    })
 
 var app = express();
 
@@ -39,76 +39,49 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser('sagar-konda'));
 app.use(session({
-  name:'session-id',
-  secret:'sagar-konda',
-  saveUninitialized:false,
-  resave:false,
-  store:new FileStore()
+  name: 'session-id',
+  secret: 'sagar-konda',
+  saveUninitialized: false,
+  resave: false,
+  store: new FileStore()
 }))
 
-const auth=(req,res,next)=>{
-  console.log(req.session);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-  if(!req.session.user)
-  {
-    var authHeader=req.headers.authorization;
-    if(!authHeader)
-    {
-      var err=new Error('You are Not Authenticated !');
-      res.setHeader('WWW-Authenticate','Basic');
-      err.status=401;
-      return next(err);
-    }
-    var auth=new Buffer.from(authHeader.split(' ')[1],'base64').toString().split(":");
-    var username=auth[0];
-    var password=auth[1];
-  
-    if(username=='admin' && password=='password')
-    {
-      req.session.user='admin';
-      next();
-    }
-    else{
-      var err=new Error('You are Not Authenticated !');
-      res.setHeader('WWW-Authenticate','Basic');
-      err.status=401;
-      return next(err);
-    }
-  }
-  else
-  {
-    if(req.session.user=='admin'){
-      next();
-    }
-    else
-    {
-      var err=new Error('You are Not Authenticated !');
-      res.setHeader('WWW-Authenticate','Basic');
-      err.status=401;
-      return next(err);
-    }
-  }
 
+const auth = (req, res, next) => {
+
+  if (!req.session.user) {
+    var err = new Error('You are Not Authenticated !');
+    err.status = 403;
+    return next(err);
+  }
+  if (req.session.user == 'authenticated') {
+    next();
+  }
+  else {
+    var err = new Error('You are Not Authenticated !');
+    err.status = 403;
+    return next(err);
+  }
 }
-
 
 app.use(auth);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/dishes',dishesRouter);
-app.use('/promotions',promotionsRouter);
-app.use('/leaders',leadersRouter);
+app.use('/dishes', dishesRouter);
+app.use('/promotions', promotionsRouter);
+app.use('/leaders', leadersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
