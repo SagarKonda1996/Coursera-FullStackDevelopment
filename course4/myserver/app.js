@@ -16,6 +16,7 @@ var promotionsRouter = require('./routes/promoRouter')
 var leadersRouter = require('./routes/leaderRouter')
 var uploadRouter=require('./routes/uploadRouter');
 var favoritesRouter=require('./routes/favoritesRouter');
+var commentRouter=require('./routes/commentRouters');
 
 const mongoose = require('mongoose')
 
@@ -70,6 +71,7 @@ app.use('/promotions', promotionsRouter);
 app.use('/leaders', leadersRouter);
 app.use('/imageUpload',uploadRouter);
 app.use('/favorites',favoritesRouter);
+app.use('/comments',commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

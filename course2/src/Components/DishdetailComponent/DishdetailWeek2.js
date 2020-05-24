@@ -20,12 +20,12 @@ const Comments = ({ comments = [] }) => {
                 {                        
                     comments.map((comment) =>
                         <Fade in>
-                            <li className="my-2" key={comment.id}>
+                            <li className="my-2" key={comment._id}>
                                 <p>
                                     {comment.comment}
                                 </p>
                                 <p>
-                                    {`--${comment.author},${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}`}
+                                    {`--${comment.author.firstname},${new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.updatedAt)))}`}
                                 </p>
                             </li>
                         </Fade>
@@ -39,7 +39,7 @@ const Comments = ({ comments = [] }) => {
 }
 const CommentForm = ({ dishId, postComment }) => {
     const onSubmit = (values) => {
-        postComment(dishId, values.rating, values.author, values.comment)
+        postComment(dishId, values.rating, values.comment)
     }
     return <LocalForm onSubmit={(values) => onSubmit(values)}>
         <Row className="form-group">
@@ -61,31 +61,7 @@ const CommentForm = ({ dishId, postComment }) => {
                 </Control.select>
             </Col>
         </Row>
-        <Row className="form-group">
-            <Label htmlFor="author" md={2}>Your Name</Label>
-            <Col md={10}>
-                <Control.text
-                    model=".author"
-                    id="author"
-                    name="author"
-                    className="form-control"
-                    validators={{
-                        minLength: minLength(2),
-                        maxLength: maxLength(15)
-                    }}
-                />
-                <Errors
-                    className="text-danger"
-                    model=".author"
-                    show="touched"
-                    messages={{
-                        minLength: "Minimum 3 Characters Required",
-                        maxLength: "Maximum 15 Characters Allowed"
-                    }}
-                />
-            </Col>
-        </Row>
-        <Row className="form-group">
+         <Row className="form-group">
             <Label htmlFor="comment" md={2}>Comment</Label>
             <Col md={10}>
                 <Control.textarea
@@ -105,6 +81,31 @@ const CommentForm = ({ dishId, postComment }) => {
     </LocalForm>
 
 }
+const RenderDish = ({ dish,favorite,postFavorite,deleteFavorite }) => {
+    return (
+        <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
+            <Card>
+                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                <CardImgOverlay>
+                    <Button outline color="primary" onClick={() => favorite ? deleteFavorite(dish._id) : postFavorite(dish._id)}>
+                        {favorite ?
+                            <span className="fa fa-heart"></span>
+                            :
+                            <span className="fa fa-heart-o"></span>
+                        }
+                    </Button>
+                </CardImgOverlay>
+                <CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </CardBody>
+            </Card>
+        </FadeTransform>)
+}
 const DishdetailComponent = (
     {
         dish,
@@ -112,7 +113,10 @@ const DishdetailComponent = (
         postComment,
         isLoading,
         errMess,
-        commentsErrMess
+        commentsErrMess,
+        favorite,
+        postFavorite,
+        deleteFavorite
     }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const toggleModal = () => {
@@ -150,28 +154,16 @@ const DishdetailComponent = (
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        <FadeTransform
-                            in
-                            transformProps={{
-                                exitTransform: 'scale(0.5) translateY(-50%)'
-                            }}>
-                            <Card>
-                                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-                                <CardBody>
-                                    <CardTitle>{dish.name}</CardTitle>
-                                    <CardText>{dish.description}</CardText>
-                                </CardBody>
-                            </Card>
-                        </FadeTransform>
+                        <RenderDish dish={dish} favorite={favorite} postFavorite={postFavorite} deleteFavorite={deleteFavorite}/>
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <h4>Comments</h4>
-                        <Comments comments={dish.comments ? dish.comments : comments} />
+                        <Comments comments={comments} />
                         <Button outline onClick={toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
                         <Modal isOpen={isModalOpen} toggle={toggleModal} >
                             <ModalHeader toggle={toggleModal}>Submit Comment</ModalHeader>
                             <ModalBody>
-                                <CommentForm dishId={dish.id} postComment={postComment} />
+                                <CommentForm dishId={dish._id} postComment={postComment} />
                             </ModalBody>
                         </Modal>
 

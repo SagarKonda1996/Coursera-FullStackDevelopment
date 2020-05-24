@@ -21,7 +21,7 @@ const RenderCard=(
         <h4>{errMess}</h4>
         )
     }
-    return(
+    return item?(
         <FadeTransform
             in
             transformProps={{
@@ -38,7 +38,7 @@ const RenderCard=(
             </Card>
         </FadeTransform>
         
-    );
+    ):null;
 
 }
 
@@ -49,7 +49,9 @@ const Home=({
     dishesLoading,
     dishesErrMess,
     promosLoading,
-    promosErrMess
+    promosErrMess,
+    leadersLoading,
+    leadersErrMess
 })=> {
     return(
         <div className="container">
@@ -69,7 +71,10 @@ const Home=({
                     />
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={leader} />
+                    <RenderCard item={leader}
+                        isLoading={leadersLoading}
+                        errMess={leadersErrMess}
+                    />
                 </div>
             </div>
         </div>

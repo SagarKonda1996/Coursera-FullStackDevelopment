@@ -2,14 +2,19 @@ import React,{useState,useRef} from 'react'
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';import {NavLink} from 'react-router-dom'
-const Header = props => {
+const Header = ({
+    auth,
+    loginUser, 
+    logoutUser
+}) => {
     const [isNavOpen, setIsNavOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const toggleModal=()=>{
         setIsModalOpen(!isModalOpen)
     }
     const handleSubmit=(event)=>{
-        console.log(inputref.current.username.value,inputref.current.password.value,inputref.current.remember.checked)
+        toggleModal()
+        loginUser({username:inputref.current.username.value,password:inputref.current.password.value})
         event.preventDefault()
     }
     const inputref=useRef({
@@ -33,12 +38,34 @@ const Header = props => {
                                 <NavLink className="nav-link"  to='/menu'><span className="fa fa-list fa-lg"></span> Menu</NavLink>
                             </NavItem>
                             <NavItem>
+                                <NavLink className="nav-link"  to='/favorites'><span className="fa fa-heart fa-lg"></span> Favorites</NavLink>
+                            </NavItem>
+                            <NavItem>
                                 <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
                             </NavItem>
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <Button outline onClick={toggleModal}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
+                                { !auth.isAuthenticated ?
+                                        <Button outline onClick={toggleModal}>
+                                            <span className="fa fa-sign-in fa-lg"></span> Login
+                                            {auth.isFetching ?
+                                                <span className="fa fa-spinner fa-pulse fa-fw"></span>
+                                                : null
+                                            }
+                                        </Button>
+                                        :
+                                        <div>
+                                        <div className="navbar-text mr-3">{auth.user.username}</div>
+                                        <Button outline onClick={logoutUser}>
+                                            <span className="fa fa-sign-out fa-lg"></span> Logout
+                                            {auth.isFetching ?
+                                                <span className="fa fa-spinner fa-pulse fa-fw"></span>
+                                                : null
+                                            }
+                                        </Button>
+                                        </div>
+                                    }
                                 </NavItem>
                             </Nav>
                         </Collapse>

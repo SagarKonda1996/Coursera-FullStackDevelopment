@@ -76,7 +76,14 @@ const removeDuplicatesandAdd = async (favorite, dishesList) => {
                 resolve([err, null]);
             }
             else {
-                resolve([null, updatedFavorite])
+                Favorites.findById(updatedFavorite._id).populate('user').populate('dishes')
+                .then((populatedFavorite)=>{
+                    resolve([null, populatedFavorite])
+                },(err)=> resolve([err, null]))
+                .catch((err)=>{
+                    resolve([err, null]);
+                })
+                
             }
         })
     })
@@ -118,7 +125,9 @@ favoritesRouter.route('/')
         }
     })
     .delete(cors.corsWithOptions, authenticate.verifyUser, async (req, res, next) => {
-        Favorites.findOneAndDelete({ user: req.user._id })
+        Favorites.findOneAndUpdate({ user: req.user._id },{
+            $set:{dishes:[]}
+        },{new:true})
             .then((favorite) => {
                 res.statusCode = 200
                 res.setHeader('Content-Type', 'application/json')
@@ -190,24 +199,16 @@ favoritesRouter.route('/:dishId')
                     
                     favorite.save()
                         .then((updatedFavorite) => {
-//Check if the Dishes List for a user is Empty after delete
-                            if(updatedFavorite.dishes.length>0)
-                            {
+                            Favorites.findOne({user:req.user._id}).populate('dishes')
+                            .then((favorite)=>{
+
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'application/json')
-                                res.json(updatedFavorite)
-                            }
-                            else
-                            {
-//If dishes list for user is empty delete the Document
-                                Favorites.findOneAndDelete({ user: req.user._id })
-                                .then((updatedFavorite)=>{
-                                    res.statusCode = 200;
-                                    res.setHeader('Content-Type', 'application/json')
-                                    res.json(updatedFavorite)
-                                }, (err) => next(err))
-                                .catch((err) => next(err))
-                            }    
+                                res.json(favorite)
+                                
+                        }, (err) => next(err))
+                        .catch((err) => next(err))
+                                
                         }, (err) => next(err))
                         .catch((err) => next(err))
                 }

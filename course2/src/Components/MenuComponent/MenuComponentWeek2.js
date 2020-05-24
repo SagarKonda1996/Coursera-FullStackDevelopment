@@ -11,8 +11,8 @@ const RenderMenuItem=({
     dish,
     onSelect
 })=>{
-    return  <Link to={`/menu/${dish.id}`}>
-    <Card key={dish.id}
+    return  <Link to={`/menu/${dish._id}`}>
+    <Card key={dish._id}
         onClick={() => onSelect(dish)}>
         <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name} />
         <CardImgOverlay>
@@ -28,7 +28,7 @@ const MenuComponent = (
      }) => {
     const Menu = () => {
         return dishes.dishes.map((dish) =>
-        <div key={dish.id} className="col-12 col-md-5 m-1">
+        <div key={dish._id} className="col-12 col-md-5 m-1">
            <RenderMenuItem 
            dish={dish}
            onSelect={onSelect}
