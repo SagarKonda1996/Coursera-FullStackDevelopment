@@ -14,12 +14,6 @@ function App() {
     <Provider store={ConfigureStore()}>
         <BrowserRouter>
     <div className="App">
-     {/* <Navbar dark color="primary">
-     <div className="container">
-       <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-     </div>
-     </Navbar>
-     <MenuComponent dishes={dishes}/> */}
      <Main/>
     </div>
     </BrowserRouter>
